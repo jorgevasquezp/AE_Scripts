@@ -30,13 +30,13 @@
                 myButtonGroup.alignChildren = "center";
 
             win.button1.onClick = function(){
-                button1Click();
+                win.button1Click();
             }
             win.button2.onClick = function(){
-                button2Click();
+                win.button2Click();
             }
             win.button3.onClick = function(){
-                button3Click();
+                win.button3Click();
             }
 
         win.layout.layout(true);
@@ -57,14 +57,14 @@
     /* General functions */
 
     /* Project Specific functions */
-    function button1Click(){
-        alert("Button 1 was clicked");
+    w.button1Click = function(){
+        alert( w.button1.text + "was clicked"); //reference panel stuff
     }
-    function button2Click(){
-        alert("Button 2 was clicked");
+    w.button2Click =function(){
+        alert( w.button2.text + "was clicked");
     }
-    function button3Click(){
-        alert("Button 3 was clicked");
+    w.button3Click = function(){
+        alert( w.button3.text + "was clicked");
     }
 
 
