@@ -21,7 +21,6 @@ function getSelectedProjectComps(){
     }
     return items;
 }
-
 function getAllProjectComps(){
     var items = [];
     var p = app.project;
@@ -33,7 +32,6 @@ function getAllProjectComps(){
     }
     return items;
 }
-
 function selectLayersByParented( isParented ){
     layersToSelect = getLayersByParented( isParented );
     for ( var i = 0; i < layersToSelect.length; i ++ ){
@@ -74,7 +72,6 @@ function setFPS( comp, newFPS ){
     comp.frameDuration = 1/newFPS;
 };
 function setDuration( myComp, newSecondsDuration ){
-    
 };
 function setDurationInFrames( myComp, newFrameDuration ){
     //myComp.
@@ -109,7 +106,6 @@ function resizeCompCanvasCentered( my_comp, new_size, keep_scaler ){
     }
     //app.endUndoGroup();
 }
-
 function resizeCompsCanvasCentered( new_size, keep_scaler ){
     app.beginUndoGroup("Resize Comps' Canvas Centered")
     var my_comps = getSelectedProjectItems();
@@ -120,7 +116,6 @@ function resizeCompsCanvasCentered( new_size, keep_scaler ){
     }
     app.endUndoGroup();
 }
-
 function setCompsFPS( newFPS ){
     app.beginUndoGroup("Change selected Comps' framerates");
     var my_comps = getSelectedProjectItems();
@@ -130,14 +125,12 @@ function setCompsFPS( newFPS ){
     }
     app.endUndoGroup();
 }
-
 function zeroOutLayer( myLayer ){
     myLayer.position.setValue([0,0]);
     myLayer.rotation.setValue(0);
     myLayer.anchorPoint.setValue([0,0]);
     myLayer.scale.setValue([100,100]);
 }
-
 function insertAt( text , insertText, pos ){
     var myText = text;
     var insertText = insertText;
@@ -150,7 +143,6 @@ function insertAt( text , insertText, pos ){
     }
     return newText
 }
-
 /* Extra for renaming tool, insert stringA
 into specified position of stringB.*/
 function insertAtSelectedItemsNames( text, pos){

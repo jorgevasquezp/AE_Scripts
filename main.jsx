@@ -105,11 +105,13 @@ consolidateSelectedComps();
 //setFPS( my_comp, 24 );
 //setCompsFPS( 12 );
 
-//new_size = [ 4096, 2048 ];
+var my_comp = getSelectedProjectItems()[0];
+new_size = [ 3840, 2160 ];
+resizeCompCanvasCentered( my_comp, new_size, true )
 
 //selectLayersByParented( false );
 
-//resizeCompCanvasCentered( my_comp, new_size, true )
+
 
 //alert(system.callSystem("whoami"))
 
