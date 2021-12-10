@@ -62,13 +62,42 @@ function consolidateSelectedComps(){
     }
     app.endUndoGroup();
 }
+function stripFrameInfoFromRenderNames(){
+    var q = app.project.renderQueue;
+
+    for ( var i = 1 ; i <= q.numItems ; i ++ ){
+    item = q.item(i);
+        //check the render queue item is not already rendered.    
+        //3015 is QUEUED 
+        //3013 is NEEDS_OUTPUT
+        if ( (item.status == 3015) || (item.status == 3013) ){
+
+            var new_path = item.outputModules[1].file.path;
+            var old_name = item.outputModules[1].file.name;
+            var re = RegExp (/%20\([0-9]\-[0-9]{2}\-[0-9]{2}\-[0-9]{2}\)/g);
+            var new_name = old_name.replace(re,"")
+            //var clean_name = new_name.substring(0,new_name.length-19);
+            //var ext = new_name.substring(new_name.length-4,new_name.length);
+
+            //f = new File( new_path + "/" + clean_name+ext )
+            f = new File( new_path + "/" + new_name )
+            
+            item.outputModules[1].file = f;
+
+            //alert(item.outputModules[1].file)
+
+        }
+    }
+}
+
+stripFrameInfoFromRenderNames()
 
 // var myItems = getSelectedProjectComps();
 // var myLayer = app.project.activeItem.selectedLayers[0]
 // alert(isSourceOneOfThese(myLayer, myItems))
 //alert(compareComps( myItems[0], myItems[1], 0));
 
-consolidateSelectedComps();
+//consolidateSelectedComps();
 
 // a = app.project.items[1];
 // b = app.project.items[2];
@@ -105,9 +134,9 @@ consolidateSelectedComps();
 //setFPS( my_comp, 24 );
 //setCompsFPS( 12 );
 
-var my_comp = getSelectedProjectItems()[0];
-new_size = [ 3840, 2160 ];
-resizeCompCanvasCentered( my_comp, new_size, true )
+//var my_comp = getSelectedProjectItems()[0];
+//new_size = [ 3840, 2160 ];
+//resizeCompCanvasCentered( my_comp, new_size, true )
 
 //selectLayersByParented( false );
 
