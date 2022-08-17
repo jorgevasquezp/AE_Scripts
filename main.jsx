@@ -15,8 +15,7 @@ function compareComps( compA, compB, precision ){
                 if ( compA[property] == compB[property] ){
                     result = true;
                 }else{
-                    result = false;
-                    return result;
+                    result = false;                    return result;
                 }
                 
             }
@@ -89,8 +88,67 @@ function stripFrameInfoFromRenderNames(){
         }
     }
 }
+function renderCompMarkerFrames( comp )
+{   
+    var myMP = comp.markerProperty;
+    alert( myMP );
+}
+function addLetterbox( aspect ){
+    var LetterboxLayer = app.project.activeItem.layers.addShape()
+    var aspectControl = LetterboxLayer.property("Effects").addProperty("ADBE Slider Control")
+    aspectControl.name = "Aspect Ratio"
+    var aspectDimensions = aspect.split(":")
+    aspectControl.property("Slider").setValue( aspectDimensions[0] / aspectDimensions[1] )
+    var colorControl = LetterboxLayer.property("Effects").addProperty("ADBE Color Control")
+    colorControl.name = "Color"
+    colorControl.property("Color").setValue([0,0,0,1])
+    LetterboxLayer.name = String(aspect) + " Letterbox"
+    var compFrame = LetterboxLayer.property("Contents").addProperty("ADBE Vector Shape - Rect")
+    compFrame.name = "CompFrame"
+    compFrame.property("Size").expression = "[ thisComp.width , thisComp.height ]"
+    var letterboxRect = LetterboxLayer.property("Contents").addProperty("ADBE Vector Shape - Rect")
+    letterboxRect.name = "Letterbox"
+    letterboxRect.property("Size").expression = 'w = thisComp.width;\
+    h = thisComp.height;\
+    compAspect = w / h ;\
+    aspect = effect("Aspect Ratio")("Slider");\
+    if (compAspect <= aspect ) {\
+     	[ w, w / aspect ]\
+    }else{\
+        [ h*aspect , h ]\
+    }'
+    var letterboxMerge = LetterboxLayer.property("Contents").addProperty("ADBE Vector Filter - Merge")
+    letterboxMerge.mode.setValue(3)
+    var letterboxFill = LetterboxLayer.property("Contents").addProperty("ADBE Vector Graphic - Fill")
+    letterboxFill.property("Color").expression = 'effect("Color")("Color")'
+}
+function setCompsDurations( new_duration_in_seconds ){
+    app.beginUndoGroup("x");
+    //DANGER Comps might not be the same, they only have to be NAMED the same.
+    var allCompItems = getAllProjectComps();
+    var myItems = getSelectedProjectComps();
+    // var allMyItems = []+myItems;
+    var newSource = myItems.pop();
 
-stripFrameInfoFromRenderNames()
+    for ( var i = 0 ; i < allCompItems.length ; i ++){
+        var curComp = allCompItems[i];
+            setDuration( curComp, new_duration_in_seconds)
+    }
+    app.endUndoGroup();
+}
+
+setCompsDurations(5);
+
+//addLetterbox( "2.1:1" );
+
+//alert("FUCK")
+
+//c = app.project.activeItem;
+//renderCompMarkerFrames( c );
+
+//alert(app.project.activeItem.layers[1].property("Contents").property(1).matchName)
+
+//stripFrameInfoFromRenderNames()
 
 // var myItems = getSelectedProjectComps();
 // var myLayer = app.project.activeItem.selectedLayers[0]
@@ -120,9 +178,10 @@ stripFrameInfoFromRenderNames()
 //app.project.save();
 //alert();
 
+
 //resizeCompsCanvasCentered( [ 1080, 1080 ] , true ); //1x1
 //resizeCompsCanvasCentered( [ 1080, 1350 ] , true ); //4x5
-//resizeCompsCanvasCentered( [ 1080, 1920 ] , true );
+//resizeCompsCanvasCentered( [ 1080, 1920 ] , true ); // 9x16
 
 //a="WTC2_1x1_TUNG_GLD_ROTO_Ghostface_02tl_03jvFIN"
 //alert( insertAt( a,  "TXT", -12 ));
@@ -132,10 +191,11 @@ stripFrameInfoFromRenderNames()
 //insertAtSelectedItemsNames( "TXTLS", -12 );
 
 //setFPS( my_comp, 24 );
-//setCompsFPS( 12 );
+//setCompsFPS( 23.976 );
 
 //var my_comp = getSelectedProjectItems()[0];
-//new_size = [ 3840, 2160 ];
+
+//new_size = [ 1080, 1920 ];
 //resizeCompCanvasCentered( my_comp, new_size, true )
 
 //selectLayersByParented( false );

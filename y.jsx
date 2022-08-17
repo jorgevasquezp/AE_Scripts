@@ -121,7 +121,7 @@ function setCompsFPS( newFPS ){
     var my_comps = getSelectedProjectItems();
     for ( var i = 0 ; i < my_comps.length ; i++ ){
         var my_comp = my_comps[i];
-        setFPS( my_comp, 8 );
+        setFPS( my_comp, newFPS );
     }
     app.endUndoGroup();
 }
@@ -151,4 +151,33 @@ function insertAtSelectedItemsNames( text, pos){
         var myComp = my_comps[i];
         myComp.name = insertAt( myComp.name , text, pos);
     }
+}
+
+function addLetterbox(){
+    var LetterboxLayer = app.project.activeItem.layers.addShape()
+    var aspectControl = LetterboxLayer.property("Effects").addProperty("ADBE Slider Control")
+    aspectControl.name = "Aspect Ratio"
+    aspectControl.property("Slider").setValue(16/9)
+    var colorControl = LetterboxLayer.property("Effects").addProperty("ADBE Color Control")
+    colorControl.name = "Color"
+    colorControl.property("Color").setValue([0,0,0,1])
+    LetterboxLayer.name = "Letterbox"
+    var compFrame = LetterboxLayer.property("Contents").addProperty("ADBE Vector Shape - Rect")
+    compFrame.name = "CompFrame"
+    compFrame.property("Size").expression = "[ thisComp.width , thisComp.height ]"
+    var letterboxRect = LetterboxLayer.property("Contents").addProperty("ADBE Vector Shape - Rect")
+    letterboxRect.name = "Letterbox"
+    letterboxRect.property("Size").expression ='w = thisComp.width;\
+    h = thisComp.height;\
+    compAspect = w / h ;\
+    aspect = effect("Aspect Ratio")("Slider");\
+    if (compAspect <= aspect ) {\
+     	[ w, w / aspect ]\
+    }else{\
+        [ h*aspect , h ]\
+    }'
+    var letterboxMerge = LetterboxLayer.property("Contents").addProperty("ADBE Vector Filter - Merge")
+    letterboxMerge.mode.setValue(3)
+    var letterboxFill = LetterboxLayer.property("Contents").addProperty("ADBE Vector Graphic - Fill")
+    letterboxFill.color.setValue([0,0,0,1])    
 }
