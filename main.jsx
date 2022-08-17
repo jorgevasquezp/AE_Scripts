@@ -122,7 +122,7 @@ function addLetterbox( aspect ){
     var letterboxFill = LetterboxLayer.property("Contents").addProperty("ADBE Vector Graphic - Fill")
     letterboxFill.property("Color").expression = 'effect("Color")("Color")'
 }
-function setCompsDurations( new_duration_in_seconds ){
+function setCompsSecondsDuration( new_duration_in_seconds ){
     app.beginUndoGroup("x");
     //DANGER Comps might not be the same, they only have to be NAMED the same.
     var allCompItems = getAllProjectComps();
@@ -136,8 +136,23 @@ function setCompsDurations( new_duration_in_seconds ){
     }
     app.endUndoGroup();
 }
+function setCompsFramesDuration( new_duration_in_frames ){
+    app.beginUndoGroup("x");
+    //DANGER Comps might not be the same, they only have to be NAMED the same.
+    var allCompItems = getAllProjectComps();
+    var myItems = getSelectedProjectComps();
+    // var allMyItems = []+myItems;
+    var newSource = myItems.pop();
 
-setCompsDurations(5);
+    for ( var i = 0 ; i < allCompItems.length ; i ++){
+        var curComp = allCompItems[i];
+            setDuration( curComp, new_duration_in_frames * curComp.frameDuration )
+    }
+    app.endUndoGroup();
+}
+
+//setCompsSecondsDuration(15);
+setCompsFramesDuration(1440);
 
 //addLetterbox( "2.1:1" );
 

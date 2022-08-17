@@ -72,6 +72,7 @@ function setFPS( comp, newFPS ){
     comp.frameDuration = 1/newFPS;
 };
 function setDuration( myComp, newSecondsDuration ){
+    myComp.duration = newSecondsDuration;
 };
 function setDurationInFrames( myComp, newFrameDuration ){
     //myComp.
@@ -99,6 +100,7 @@ function resizeCompCanvasCentered( my_comp, new_size, keep_scaler ){
    
    //get rid of scaling null or not.
     if (keep_scaler)
+
     {
         n.name = 'MAIN_SCALER';
     }else{
